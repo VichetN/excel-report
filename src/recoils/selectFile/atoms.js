@@ -1,9 +1,12 @@
+"use client";
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
+// let sessionStore = typeof window !== "undefined" ? window.sessionStorage : null;
+
 const { persistAtom } = recoilPersist({
   key: "parsed-data", // this key is using to store data in local storage
-  storage: sessionStorage, // configurate which stroage will be used to store the data
+//   storage: sessionStorage,
 });
 
 export const selectedFileAtom = atom({

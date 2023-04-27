@@ -29,13 +29,6 @@ function Table({ data = [], cols = [] }) {
           <tbody>
             {data?.map((r, i) => (
               <Row key={i} rowData={r} cols={cols} />
-              //   <tr key={i} className="border">
-              //     {cols?.map((c) => (
-              //       <td key={c.key} className="text-sm px-2 border break-keep">
-              //         {r[c.key]}
-              //       </td>
-              //     ))}
-              //   </tr>
             ))}
           </tbody>
         </table>
