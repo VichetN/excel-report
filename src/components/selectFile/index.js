@@ -1,16 +1,16 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import cx from "classnames";
 import * as XLSX from "xlsx";
-import { make_cols } from "@/utils/excel";
+import { useRecoilState } from "recoil";
+import { parsedDataAtom } from "@/recoils";
+import Table from "../table";
+// import { make_cols } from "@/utils/excel";
 
 function SelectFileSection() {
-  const [parsedData, setParsedData] = useState({
-    data: null,
-    cols: null,
-  });
+  const [parsedData, setParsedData] = useRecoilState(parsedDataAtom);
 
   const onDrop = useCallback(async (acceptedFiles) => {
     // Do something with the files
@@ -38,7 +38,7 @@ function SelectFileSection() {
         .indexOf(Math.max(...data.map((a) => a.length))); // only data have value
 
       setParsedData({
-        data: data,
+        data,
         cols: [...Array(data[index]?.length)].map((_, idx) => ({ key: idx })),
       });
     };
@@ -59,7 +59,7 @@ function SelectFileSection() {
         className={cx(
           "border-2 border-dashed border-gray-700 hover:border-gray-300 bg-gray-200 flex justify-center items-center h-24 cursor-pointer rounded-xl transition-all ease-out",
           {
-            "border-4 border-gray-300 bg-gray-100 mx-4": isDragActive,
+            "border-4 border-gray-400 bg-gray-100 mx-4": isDragActive,
           }
         )}
       >
@@ -75,36 +75,10 @@ function SelectFileSection() {
           </p>
         </div>
       </div>
-
-      <div className="overflow-x-auto mt-4 p-2 border border-gray-500 rounded-xl">
-        <div className="">
-          <table className="rounded-lg">
-            {/* <thead>
-              <tr>
-                {parsedData?.cols?.map((c) => (
-                  <th key={c.key}>{c.name}</th>
-                ))}
-              </tr>
-            </thead> */}
-            <tbody>
-              {parsedData?.data?.map((r, i) => (
-                <tr key={i} className="border">
-                  {parsedData?.cols
-                    //   ?.filter((e) => Boolean(r[e.key]))
-                    ?.map((c) => (
-                      <td
-                        key={c.key}
-                        className="text-sm px-2 border break-keep"
-                      >
-                        {r[c.key]}
-                      </td>
-                    ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+      <div className="mt-4">
+        <Table data={parsedData?.data} cols={parsedData?.cols} />
       </div>
+      {/* </div> */}
     </section>
   );
 }
