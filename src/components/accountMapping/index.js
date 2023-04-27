@@ -2,12 +2,13 @@
 
 import { ItemTypes, accountingTypes } from "@/constants";
 import Table from "../table";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { parsedDataAtom } from "@/recoils";
 import { useDrop } from "react-dnd";
 import cx from "classnames";
 
-function DroppableType({ subType = [], parsedData, setParsedData }) {
+function DroppableType({ subType = [], handleUpdateType }) {
+  const parsedData = useRecoilValue(parsedDataAtom);
   const [{ isActive }, drop] = useDrop(() => ({
     accept: ItemTypes.ROW,
     collect: (monitor) => ({
@@ -18,17 +19,7 @@ function DroppableType({ subType = [], parsedData, setParsedData }) {
       if (didDrop) {
         return;
       }
-      const copyData = [...parsedData?.data];
-
-      const currentItem = copyData?.[_item?.rowIndex];
-      const newItem = [...currentItem, subType?.title];
-
-      copyData?.splice(_item?.rowIndex, 1, newItem); // update to data array
-
-      setParsedData((prev) => ({
-        ...prev,
-        data: [...copyData],
-      }));
+      handleUpdateType(parsedData?.data, _item?.rowIndex, subType?.title);
     },
   }));
   return (
@@ -38,7 +29,7 @@ function DroppableType({ subType = [], parsedData, setParsedData }) {
       className={cx(
         "p-2 bg-gray-200 rounded-lg my-2 transition-all ease-in duration-150",
         {
-          "opacity-50 outline outline-indigo-400": isActive,
+          "outline outline-indigo-400": isActive,
         }
       )}
     >
@@ -49,6 +40,20 @@ function DroppableType({ subType = [], parsedData, setParsedData }) {
 
 function AccountMapping() {
   const [parsedData, setParsedData] = useRecoilState(parsedDataAtom);
+
+  const handleUpdateType = (data, rowIndex, type) => {
+    const copyData = [...data];
+
+    const currentItem = copyData?.[rowIndex];
+    const newItem = [...currentItem, type];
+
+    copyData?.splice(rowIndex, 1, newItem); // update to data array
+
+    setParsedData((prev) => ({
+      cols: [...prev?.cols],
+      data: [...copyData],
+    }));
+  };
   return (
     <section className="my-2 sm:my-4 p-4 rounded-lg shadow-xl bg-white">
       <div className="flex gap-4">
@@ -59,10 +64,9 @@ function AccountMapping() {
               <ul>
                 {load?.sub?.map((load1) => (
                   <DroppableType
-                    key={load?.id}
+                    key={load1?.id}
                     subType={load1}
-                    parsedData={parsedData}
-                    setParsedData={setParsedData}
+                    handleUpdateType={handleUpdateType}
                   />
                 ))}
               </ul>
