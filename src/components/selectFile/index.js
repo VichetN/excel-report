@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import cx from "classnames";
 import * as XLSX from "xlsx";
@@ -11,6 +11,14 @@ import Table from "../table";
 
 function SelectFileSection() {
   const [parsedData, setParsedData] = useRecoilState(parsedDataAtom);
+  const [parsedDataRecoil, setParsedDataRecoil] =
+    useRecoilState(parsedDataAtom);
+
+  useEffect(() => {
+    if (parsedDataRecoil) {
+      setParsedData(parsedDataRecoil);
+    }
+  }, [parsedDataRecoil]);
 
   const onDrop = useCallback(async (acceptedFiles) => {
     // Do something with the files
@@ -37,7 +45,7 @@ function SelectFileSection() {
         ?.map((a) => a.length)
         .indexOf(Math.max(...data.map((a) => a.length))); // only data have value
 
-      setParsedData({
+      setParsedDataRecoil({
         data,
         cols: [...Array(data[index]?.length)].map((_, idx) => ({ key: idx })),
       });

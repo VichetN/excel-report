@@ -1,17 +1,27 @@
-import React from "react";
+import { ItemTypes } from "@/constants";
+import cx from "classnames";
+import React, { useEffect } from "react";
 import { useDrag } from "react-dnd";
+import { getEmptyImage } from "react-dnd-html5-backend";
 
-function Row({ rowData, cols }) {
-  const [collected, drag, dragPreview] = useDrag(() => ({
-    type: "account-map",
-    item: { id: 1 },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
+function Row({ rowData, cols, index }) {
+  const [{ isDragging }, drag, dragPreview] = useDrag(
+    () => ({
+      type: ItemTypes.ROW,
+      item: { rowIndex: index },
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
     }),
-  }));
+    []
+  );
+
+  //   useEffect(() => {
+  //     dragPreview(getEmptyImage(), { captureDraggingState: true });
+  //   }, []);
 
   return (
-    <tr ref={drag} className="border" {...collected}>
+    <tr ref={drag} className={cx("", { "opacity-50": isDragging })}>
       {cols?.map((c) => (
         <td key={c.key} className="text-sm px-2 border break-keep">
           {rowData[c.key]}
@@ -28,7 +38,7 @@ function Table({ data = [], cols = [] }) {
         <table className="rounded-lg">
           <tbody>
             {data?.map((r, i) => (
-              <Row key={i} rowData={r} cols={cols} />
+              <Row key={i} rowData={r} index={i} cols={cols} />
             ))}
           </tbody>
         </table>
