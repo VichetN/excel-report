@@ -49,6 +49,7 @@ function Row({ rowData, index }) {
               <Draggable
                 draggableId={`balanceSheet-${rowData?.id}-${load?.id}`}
                 index={i}
+                key={load?.id}
               >
                 {(provided, snapshot) => (
                   <li
@@ -103,7 +104,7 @@ function BalanceSheet() {
           >
             <tbody>
               {groupType?.map((r, i) => (
-                <Row index={i} rowData={r} />
+                <Row key={r?.id} index={i} rowData={r} />
               ))}
               {provided.placeholder}
             </tbody>
