@@ -37,6 +37,8 @@ import { Fragment } from "react";
 //   );
 // }
 
+/* eslint-disable react/jsx-key */
+
 function Row({ rowData }) {
   return (
     <td className="py-2">
