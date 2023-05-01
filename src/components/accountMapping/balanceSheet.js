@@ -50,12 +50,12 @@ function Row({ rowData }) {
           >
             {(provided, snapshot) => (
               <div
+                key={`${rowData?.id}-${load?.id}`}
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
                 ref={provided.innerRef}
               >
                 <div
-                  key={`${rowData?.id}-${load?.id}`}
                   className={cx("px-4 py-2 rounded-sm", {
                     "bg-indigo-200/60": snapshot.isDragging,
                   })}
