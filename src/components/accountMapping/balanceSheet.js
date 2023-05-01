@@ -1,10 +1,10 @@
 "use client";
 
-import cx from "classnames";
 import { useRecoilState } from "recoil";
 import { groupTypeAtom, parsedDataAtom } from "@/recoils";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Fragment } from "react";
+import RowClient from "./rowClient";
 
 // function DroppableType({ subType = [], handleUpdateType }) {
 //   const parsedData = useRecoilValue(parsedDataAtom);
@@ -57,32 +57,7 @@ function Row({ rowData }) {
                 {...provided.dragHandleProps}
                 ref={provided.innerRef}
               >
-                <div
-                  className={cx("px-4 py-2 rounded-sm", {
-                    "bg-indigo-200/60": snapshot.isDragging,
-                  })}
-                >
-                  {load?.title}
-                </div>
-
-                {[...Array(3)].map((_, index) => (
-                  <div
-                    className={cx("pl-8 w-full flex", {
-                      // hidden: snapshot.isDragging,
-                    })}
-                    key={index}
-                  >
-                    <div className="px-3 flex-1 border">Salary</div>
-                    <div className="w-[400px] grid grid-cols-2">
-                      <div className="px-3 border">
-                        {Number(400).toFixed(2)}
-                      </div>
-                      <div className="px-3 border">
-                        {Number(420).toFixed(2)}
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                <RowClient groupCategoryId={rowData?.id} dataSource={load} />
               </div>
             )}
           </Draggable>
@@ -120,7 +95,7 @@ function BalanceSheet() {
           {groupType?.map((r, i) => (
             <Droppable
               droppableId={`balanceSheet-id-${r?.id}`}
-              type="accountTable"
+              type="groupType"
             >
               {(provided, snapshot) => (
                 <Fragment key={r?.id}>
