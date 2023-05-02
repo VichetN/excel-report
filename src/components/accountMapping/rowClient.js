@@ -1,17 +1,6 @@
 import cx from "classnames";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 
-const fakeData = [
-  {
-    id: "1",
-    title: "Salary",
-  },
-  {
-    id: "2",
-    title: "Salary",
-  },
-];
-
 /* eslint-disable react/jsx-key */
 function RowClient({ dataSource, groupCategoryId }) {
   return (
@@ -28,7 +17,7 @@ function RowClient({ dataSource, groupCategoryId }) {
           >
             {dataSource?.title}
           </div>
-          {fakeData.map((load, index) => (
+          {dataSource?.items?.map((load, index) => (
             <Draggable
               draggableId={`clientData-${groupCategoryId}-${dataSource?.id}-${load?.id}`}
               index={index}
@@ -45,9 +34,9 @@ function RowClient({ dataSource, groupCategoryId }) {
                   ref={provided1.innerRef}
                 >
                   <div className="px-3 flex-1 border">{load?.title}</div>
-                  <div className="w-[400px] grid grid-cols-2">
-                    <div className="px-3 border">{Number(400).toFixed(2)}</div>
-                    <div className="px-3 border">{Number(420).toFixed(2)}</div>
+                  <div className="w-[300px] grid grid-cols-2">
+                    <div className="px-3 border">{Number(load?.currentYearBalance).toFixed(2)}</div>
+                    <div className="px-3 border">{Number(load?.pastYearBalance).toFixed(2)}</div>
                   </div>
                 </div>
               )}

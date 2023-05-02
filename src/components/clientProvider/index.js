@@ -1,15 +1,12 @@
 "use client";
 
-import { DragDropContext } from "react-beautiful-dnd";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { RecoilRoot } from "recoil";
+import DragDropProvider from "./dragDropProvider";
 
 function ClientProvider({ children }) {
-  const onDragEnd = () => {};
   return (
     <RecoilRoot>
-      <DragDropContext onDragEnd={onDragEnd}>{children}</DragDropContext>
+      <DragDropProvider>{children}</DragDropProvider>
     </RecoilRoot>
   );
 }

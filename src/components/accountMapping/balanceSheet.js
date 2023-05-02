@@ -5,40 +5,9 @@ import { groupTypeAtom, parsedDataAtom } from "@/recoils";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Fragment } from "react";
 import RowClient from "./rowClient";
-
-// function DroppableType({ subType = [], handleUpdateType }) {
-//   const parsedData = useRecoilValue(parsedDataAtom);
-//   const [{ isActive }, drop] = useDrop(() => ({
-//     accept: ItemTypes.ROW,
-//     collect: (monitor) => ({
-//       isActive: monitor.canDrop() && monitor.isOver(),
-//     }),
-//     drop: (_item, monitor) => {
-//       const didDrop = monitor.didDrop();
-//       if (didDrop) {
-//         return;
-//       }
-//       handleUpdateType(parsedData?.data, _item?.rowIndex, subType?.title);
-//     },
-//   }));
-//   return (
-//     <li
-//       ref={drop}
-//       key={subType?.id}
-//       className={cx(
-//         "p-2 bg-gray-200 rounded-lg my-2 transition-all ease-in duration-150",
-//         {
-//           "outline outline-indigo-400": isActive,
-//         }
-//       )}
-//     >
-//       {subType?.title}
-//     </li>
-//   );
-// }
+import RowTotal from "./rowTotal";
 
 /* eslint-disable react/jsx-key */
-
 function Row({ rowData }) {
   return (
     <td className="py-2">
@@ -68,7 +37,6 @@ function Row({ rowData }) {
 }
 
 function BalanceSheet() {
-  const [parsedData, setParsedData] = useRecoilState(parsedDataAtom);
   const [groupType, setGroupType] = useRecoilState(groupTypeAtom);
 
   // const handleUpdateType = (data, rowIndex, type) => {
@@ -90,8 +58,15 @@ function BalanceSheet() {
         <h2 className="uppercase font-bold">Balance Sheet</h2>
       </div>
 
+      <div></div>
+
       <table className="w-full rounded-lg">
         <tbody>
+          <tr>
+            <td>
+              <RowTotal />
+            </td>
+          </tr>
           {groupType?.map((r, i) => (
             <Droppable
               droppableId={`balanceSheet-id-${r?.id}`}
