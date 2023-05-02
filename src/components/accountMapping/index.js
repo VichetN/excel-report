@@ -1,12 +1,12 @@
 "use client";
 
 import Table from "../table";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import { parsedDataAtom } from "@/recoils";
 import BalanceSheet from "./balanceSheet";
 
 function AccountMapping() {
-  const [parsedData, setParsedData] = useRecoilState(parsedDataAtom);
+  const parsedData = useRecoilValue(parsedDataAtom);
 
   return (
     <section className="my-2 sm:my-4 p-4 rounded-lg shadow-xl bg-white overflow-x-auto">

@@ -7,7 +7,6 @@ function RowTotal() {
   const { totalCurrentYear, totalPastYear } = useRecoilValue(
     totalGroupTypeSelector
   );
-  console.log(totalCurrentYear, totalCurrentYear);
   return (
     <>
       <div className="pl-8 w-full flex">

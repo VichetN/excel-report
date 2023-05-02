@@ -68,7 +68,6 @@ function RowClient({ dataSource, groupCategoryId }) {
                   )}
                 </Draggable>
               ))}
-
               {provided.placeholder}
             </div>
           </div>
