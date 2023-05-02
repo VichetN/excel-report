@@ -7,6 +7,7 @@ function RowTotal() {
   const { totalCurrentYear, totalPastYear } = useRecoilValue(
     totalGroupTypeSelector
   );
+  console.log(totalCurrentYear, totalCurrentYear);
   return (
     <>
       <div className="pl-8 w-full flex">
@@ -22,9 +23,9 @@ function RowTotal() {
         <div className="px-3 flex-1" />
         <div className="w-[300px] grid grid-cols-2">
           <div className="px-3 border">
-            {Number(totalCurrentYear).toFixed(2)}
+            {Number(totalCurrentYear || 0).toFixed(2)}
           </div>
-          <div className="px-3 border">{Number(totalPastYear).toFixed(2)}</div>
+          <div className="px-3 border">{Number(totalPastYear || 0).toFixed(2)}</div>
         </div>
       </div>
     </>

@@ -8,10 +8,10 @@ export const totalGroupTypeSelector = selector({
     const groupType = get(groupTypeAtom);
 
     // get sub in groupType
-    const subArr = groupType?.map((load) => load?.sub);
+    const subArr = groupType?.map((load) => load?.sub || []);
     const newSubArr = subArr?.flat();
     // get items in sub
-    const itemsArr = newSubArr?.map((load) => load?.items);
+    const itemsArr = newSubArr?.map((load) => load?.items || []);
     const newItemsArr = itemsArr?.flat();
 
     const totalCurrentYear = newItemsArr?.reduce(
