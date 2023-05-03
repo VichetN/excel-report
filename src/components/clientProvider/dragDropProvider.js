@@ -12,7 +12,6 @@ function DragDropProvider({ children }) {
     const { source, destination } = result;
 
     if (!destination) return;
-
     if (
       source.droppableId === destination.droppableId &&
       source.index === destination.index
@@ -41,7 +40,7 @@ function DragDropProvider({ children }) {
     }
 
     if (source?.droppableId?.includes("groupType")) {
-      const idData = source?.droppableId?.split("-");
+      const idData = source?.droppableId?.split("-id-");
       const groupCategoryId = idData[1];
       const groupTypeId = idData[2];
 
@@ -72,10 +71,34 @@ function DragDropProvider({ children }) {
         });
       }
     }
+    if (source?.droppableId?.includes("balanceSheet")) {
+      const idData = source?.droppableId?.split("-");
+      const groupCategoryId = idData[1];
 
+      // // update currentItem
+      const srcCurrentCategory = copyGroupType?.find(
+        (e) => e?.id === groupCategoryId
+      );
+      const indexCategory = groupType?.findIndex(
+        (e) => e?.id === groupCategoryId
+      );
+      if (srcCurrentCategory) {
+        const subTypes = [...srcCurrentCategory?.sub];
+
+        newItem = subTypes?.splice(source.index, 1)[0];
+        newItem = { ...newItem, id: uuidv4() };
+
+        copyGroupType?.splice(indexCategory, 1, {
+          ...srcCurrentCategory,
+          sub: [...subTypes],
+        });
+      }
+    }
+    console.log(newItem);
+    // destination
     if (destination?.droppableId?.includes("groupType")) {
-      console.log({ source, destination });
-      const idData = destination?.droppableId?.split("-");
+      // console.log({ source, destination });
+      const idData = destination?.droppableId?.split("-id-");
       const groupCategoryId = idData[1];
       const groupTypeId = idData[2];
 
@@ -105,7 +128,28 @@ function DragDropProvider({ children }) {
         setGroupType([...copyGroupType]);
       }
     }
-    
+
+    if (destination?.droppableId?.includes("balanceSheet")) {
+      const idData = destination?.droppableId?.split("-");
+      const groupCategoryId = idData[1];
+
+      // // update currentItem
+      currentCategory = copyGroupType?.find((e) => e?.id === groupCategoryId);
+      const indexCategory = groupType?.findIndex(
+        (e) => e?.id === groupCategoryId
+      );
+      if (currentCategory) {
+        const subTypes = [...currentCategory?.sub];
+        // replace new sub type
+        subTypes?.splice(destination?.index, 0, { ...newItem });
+        copyGroupType?.splice(indexCategory, 1, {
+          ...currentCategory,
+          sub: [...subTypes],
+        });
+
+        setGroupType([...copyGroupType]);
+      }
+    }
   };
   return <DragDropContext onDragEnd={onDragEnd}>{children}</DragDropContext>;
 }

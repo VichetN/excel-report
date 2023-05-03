@@ -4,6 +4,7 @@ import { useRecoilState } from "recoil";
 import { groupTypeAtom, parsedDataAtom } from "@/recoils";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Fragment } from "react";
+import cx from "classnames";
 import RowClient from "./rowClient";
 import RowTotal from "./rowTotal";
 import RowYear from "./rowYear";
@@ -13,16 +14,15 @@ function Row({ rowData }) {
   return (
     <td className="py-2">
       <b>{rowData?.title}</b>
-      <Droppable
-        droppableId={`balanceSheet-id-${rowData?.id}`}
-        type="groupType"
-      >
+      <Droppable droppableId={`balanceSheet-${rowData?.id}`} type="groupType">
         {(provided1, snapshot1) => (
           <>
             <div
-              className="pl-4 "
               ref={provided1.innerRef}
               {...provided1.droppableProps}
+              className={cx("pl-4", {
+                // "h-[80px]": rowData?.sub?.length <= 0,
+              })}
             >
               {rowData?.sub?.map((load, i) => (
                 <Draggable

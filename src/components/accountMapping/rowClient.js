@@ -6,7 +6,7 @@ import { TbSquareRoundedMinus, TbSquareRoundedPlus } from "react-icons/tb";
 /* eslint-disable react/jsx-key */
 function RowClient({ dataSource, groupCategoryId }) {
   const [isExpanded, setIsExpanded] = useState(true);
-
+  console.log(dataSource)
   const totalCurrentYear = dataSource?.items?.reduce(
     (acc, curr) => acc + curr?.currentYearBalance,
     0
@@ -19,7 +19,7 @@ function RowClient({ dataSource, groupCategoryId }) {
 
   return (
     <Droppable
-      droppableId={`groupType-${groupCategoryId}-${dataSource?.id}`}
+      droppableId={`groupType-id-${groupCategoryId}-id-${dataSource?.id}`}
       type="accountTable"
     >
       {(provided, snapshot) => {
