@@ -94,7 +94,6 @@ function DragDropProvider({ children }) {
         });
       }
     }
-    console.log(newItem);
     // destination
     if (destination?.droppableId?.includes("groupType")) {
       // console.log({ source, destination });

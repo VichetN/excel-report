@@ -8,13 +8,15 @@ function RowClient({ dataSource, groupCategoryId }) {
   const [isExpanded, setIsExpanded] = useState(true);
 
   const totalCurrentYear = dataSource?.items?.reduce(
-    (acc, curr) => acc + (curr?.currentYearBalance || 0),
+    (acc, curr) => acc + curr?.currentYearBalance,
     0
   );
   const totalPastYear = dataSource?.items?.reduce(
-    (acc, curr) => acc + (curr?.pastYearBalance || 0),
+    (acc, curr) => acc + curr?.pastYearBalance,
     0
   );
+
+  console.log(dataSource)
 
   return (
     <Droppable
@@ -23,9 +25,11 @@ function RowClient({ dataSource, groupCategoryId }) {
     >
       {(provided, snapshot) => {
         return (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
+          <div ref={provided.innerRef} {...provided.droppableProps} className={cx({
+            "pb-4 mt-2": isExpanded
+          })}>
             <div
-              className={cx("rounded-sm flex", {
+              className={cx("rounded-sm flex ", {
                 // "py-2": isExpanded,
               })}
             >
@@ -56,15 +60,14 @@ function RowClient({ dataSource, groupCategoryId }) {
                 })}
               >
                 <div className="px-3 border">
-                  {Number(totalCurrentYear || 0).toFixed(2)}
+                  {Number(totalCurrentYear).toFixed(2)}
                 </div>
                 <div className="px-3 border">
-                  {Number(totalPastYear || 0).toFixed(2)}
+                  {Number(totalPastYear).toFixed(2)}
                 </div>
               </div>
             </div>
-
-            <div className={cx({ hidden: !isExpanded, "my-2": isExpanded })}>
+            <div className={cx("my-2 ",{ hidden: !isExpanded })}>
               {dataSource?.items?.map((load, index) => (
                 <Draggable
                   draggableId={`clientData-${groupCategoryId}-${dataSource?.id}-${load?.id}`}
