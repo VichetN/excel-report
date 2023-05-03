@@ -6,14 +6,13 @@ import { TbSquareRoundedMinus, TbSquareRoundedPlus } from "react-icons/tb";
 /* eslint-disable react/jsx-key */
 function RowClient({ dataSource, groupCategoryId }) {
   const [isExpanded, setIsExpanded] = useState(true);
-  console.log(dataSource)
+
   const totalCurrentYear = dataSource?.items?.reduce(
-    (acc, curr) => acc + curr?.currentYearBalance,
+    (acc, curr) => acc + (curr?.currentYearBalance || 0),
     0
   );
-
   const totalPastYear = dataSource?.items?.reduce(
-    (acc, curr) => acc + curr?.pastYearBalance,
+    (acc, curr) => acc + (curr?.pastYearBalance || 0),
     0
   );
 
@@ -25,12 +24,16 @@ function RowClient({ dataSource, groupCategoryId }) {
       {(provided, snapshot) => {
         return (
           <div ref={provided.innerRef} {...provided.droppableProps}>
-            <div className={cx("rounded-sm flex",{
-              "py-2": isExpanded
-            })}>
-              <div className={cx("flex flex-1 items-center gap-2", {
-                border: !isExpanded
-              })}>
+            <div
+              className={cx("rounded-sm flex", {
+                // "py-2": isExpanded,
+              })}
+            >
+              <div
+                className={cx("flex flex-1 items-center gap-2", {
+                  // border: !isExpanded,
+                })}
+              >
                 {!isExpanded ? (
                   <TbSquareRoundedPlus
                     size={22}
@@ -53,14 +56,15 @@ function RowClient({ dataSource, groupCategoryId }) {
                 })}
               >
                 <div className="px-3 border">
-                  {Number(totalCurrentYear).toFixed(2)}
+                  {Number(totalCurrentYear || 0).toFixed(2)}
                 </div>
                 <div className="px-3 border">
-                  {Number(totalPastYear).toFixed(2)}
+                  {Number(totalPastYear || 0).toFixed(2)}
                 </div>
               </div>
             </div>
-            <div className={cx({ hidden: !isExpanded })}>
+
+            <div className={cx({ hidden: !isExpanded, "my-2": isExpanded })}>
               {dataSource?.items?.map((load, index) => (
                 <Draggable
                   draggableId={`clientData-${groupCategoryId}-${dataSource?.id}-${load?.id}`}
@@ -80,10 +84,10 @@ function RowClient({ dataSource, groupCategoryId }) {
                       <div className="px-3 flex-1 border">{load?.title}</div>
                       <div className="w-[300px] grid grid-cols-2">
                         <div className="px-3 border">
-                          {Number(load?.currentYearBalance).toFixed(2)}
+                          {Number(load?.currentYearBalance || 0).toFixed(2)}
                         </div>
                         <div className="px-3 border">
-                          {Number(load?.pastYearBalance).toFixed(2)}
+                          {Number(load?.pastYearBalance || 0).toFixed(2)}
                         </div>
                       </div>
                     </div>
