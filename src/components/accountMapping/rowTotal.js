@@ -1,15 +1,27 @@
-import { totalGroupTypeSelector } from "@/recoils";
-import moment from "moment";
-import React from "react";
-import { useRecoilValue } from "recoil";
+// import { totalGroupTypeSelector } from "@/recoils";
+// import { useRecoilValue } from "recoil";
 
-function RowTotal() {
-  const { totalCurrentYear, totalPastYear } = useRecoilValue(
-    totalGroupTypeSelector
+function RowTotal({ subGroup = [] }) {
+  // const { totalCurrentYear, totalPastYear } = useRecoilValue(
+  //   totalGroupTypeSelector
+  // );
+
+  // get items in sub
+  const itemsArr = subGroup?.map((load) => load?.items || []);
+  const newItemsArr = itemsArr?.flat();
+
+  const totalCurrentYear = newItemsArr?.reduce(
+    (acc, curr) => acc + curr?.currentYearBalance,
+    0
   );
+  const totalPastYear = newItemsArr?.reduce(
+    (acc, curr) => acc + curr?.pastYearBalance,
+    0
+  );
+
   return (
     <>
-      <div className="pl-8 w-full flex">
+      {/* <div className="pl-8 w-full flex">
         <div className="px-3 flex-1" />
         <div className="w-[300px] grid grid-cols-2">
           <div className="px-3 border font-bold">{moment().format("YYYY")}</div>
@@ -17,14 +29,16 @@ function RowTotal() {
             {moment().subtract(1, "year").format("YYYY")}
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="pl-8 w-full flex">
         <div className="px-3 flex-1" />
-        <div className="w-[300px] grid grid-cols-2">
-          <div className="px-3 border">
+        <div className="w-[300px] grid grid-cols-2 bg-blue-100 font-bold">
+          <div className="px-3 border border-black">
             {Number(totalCurrentYear || 0).toFixed(2)}
           </div>
-          <div className="px-3 border">{Number(totalPastYear || 0).toFixed(2)}</div>
+          <div className="px-3 border border-black">
+            {Number(totalPastYear || 0).toFixed(2)}
+          </div>
         </div>
       </div>
     </>

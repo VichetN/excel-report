@@ -6,37 +6,59 @@ import { TbSquareRoundedMinus, TbSquareRoundedPlus } from "react-icons/tb";
 /* eslint-disable react/jsx-key */
 function RowClient({ dataSource, groupCategoryId }) {
   const [isExpanded, setIsExpanded] = useState(true);
+
+  const totalCurrentYear = dataSource?.items?.reduce(
+    (acc, curr) => acc + curr?.currentYearBalance,
+    0
+  );
+
+  const totalPastYear = dataSource?.items?.reduce(
+    (acc, curr) => acc + curr?.pastYearBalance,
+    0
+  );
+
   return (
     <Droppable
       droppableId={`groupType-${groupCategoryId}-${dataSource?.id}`}
       type="accountTable"
     >
       {(provided, snapshot) => {
-        // console.log(snapshot);
-        // useEffect(() => {
-        //   if (snapshot.isDraggingOver) {
-        //     console.log(snapshot);
-        //     setIsExpanded(true);
-        //   }
-        // }, [snapshot.isDraggingOver]);
-
         return (
           <div ref={provided.innerRef} {...provided.droppableProps}>
-            <div className={cx("py-2 rounded-sm flex items-center gap-2")}>
-              {!isExpanded ? (
-                <TbSquareRoundedPlus
-                  size={22}
-                  className="cursor-pointer"
-                  onClick={() => setIsExpanded((prev) => !prev)}
-                />
-              ) : (
-                <TbSquareRoundedMinus
-                  size={22}
-                  className="cursor-pointer"
-                  onClick={() => setIsExpanded((prev) => !prev)}
-                />
-              )}{" "}
-              {dataSource?.title}
+            <div className={cx("rounded-sm flex",{
+              "py-2": isExpanded
+            })}>
+              <div className={cx("flex flex-1 items-center gap-2", {
+                border: !isExpanded
+              })}>
+                {!isExpanded ? (
+                  <TbSquareRoundedPlus
+                    size={22}
+                    className="cursor-pointer"
+                    onClick={() => setIsExpanded((prev) => !prev)}
+                  />
+                ) : (
+                  <TbSquareRoundedMinus
+                    size={22}
+                    className="cursor-pointer"
+                    onClick={() => setIsExpanded((prev) => !prev)}
+                  />
+                )}{" "}
+                {dataSource?.title}
+              </div>
+
+              <div
+                className={cx("w-[300px] grid grid-cols-2", {
+                  hidden: isExpanded,
+                })}
+              >
+                <div className="px-3 border">
+                  {Number(totalCurrentYear).toFixed(2)}
+                </div>
+                <div className="px-3 border">
+                  {Number(totalPastYear).toFixed(2)}
+                </div>
+              </div>
             </div>
             <div className={cx({ hidden: !isExpanded })}>
               {dataSource?.items?.map((load, index) => (

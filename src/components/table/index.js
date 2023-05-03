@@ -1,18 +1,71 @@
 import cx from "classnames";
 import React, { useEffect } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-
+const PRIMARY_BUTTON_NUMBER = 0;
 function Row({ rowData, cols, index }) {
-  // const [{ isDragging }, drag, dragPreview] = useDrag(
-  //   () => ({
-  //     type: ItemTypes.ROW,
-  //     item: { rowIndex: index },
-  //     collect: (monitor) => ({
-  //       isDragging: monitor.isDragging(),
-  //     }),
-  //   }),
-  //   []
-  // );
+  const onKeyDown = (event, snapshot) => {
+    // already used
+    if (event.defaultPrevented) {
+      return;
+    }
+
+    if (snapshot.isDragging) {
+      return;
+    }
+    if (event.keyCode !== 13) {
+      return;
+    }
+
+    // we are using the event for selection
+    event.preventDefault();
+
+    performAction(event);
+  };
+
+  // Using onClick as it will be correctly
+  // preventing if there was a drag
+  const onClick = (event) => {
+    if (event.defaultPrevented) {
+      return;
+    }
+
+    if (event.button !== PRIMARY_BUTTON_NUMBER) {
+      return;
+    }
+
+    // marking the event as used
+    event.preventDefault();
+
+    performAction(event);
+  };
+
+  // Determines if the platform specific toggle selection in group key was used
+  const wasToggleInSelectionGroupKeyUsed = (event) => {
+    const isUsingWindows = navigator.platform.indexOf("Win") >= 0;
+    return isUsingWindows ? event.ctrlKey : event.metaKey;
+  };
+
+  // Determines if the multiSelect key was used
+  const wasMultiSelectKeyUsed = (event) => event.shiftKey;
+
+  function performAction(event) {
+    // const { task, toggleSelection, toggleSelectionInGroup, multiSelectTo } =
+    //   snapshot;
+
+    console.log(rowData);
+
+    // if (wasToggleInSelectionGroupKeyUsed(event)) {
+    //   toggleSelectionInGroup(task.id);
+    //   return;
+    // }
+
+    // if (wasMultiSelectKeyUsed(event)) {
+    //   multiSelectTo(task.id);
+    //   return;
+    // }
+
+    // toggleSelection(task.id);
+  }
 
   return (
     <Draggable draggableId={`draggable-${index}`} index={index}>
@@ -23,6 +76,8 @@ function Row({ rowData, cols, index }) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
+          onClick={onClick}
+          onKeyDown={(e) => onKeyDown(e, snapshot)}
         >
           {cols?.map((c) => (
             <td

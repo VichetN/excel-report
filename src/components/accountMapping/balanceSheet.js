@@ -6,6 +6,7 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import { Fragment } from "react";
 import RowClient from "./rowClient";
 import RowTotal from "./rowTotal";
+import RowYear from "./rowYear";
 
 /* eslint-disable react/jsx-key */
 function Row({ rowData }) {
@@ -17,36 +18,41 @@ function Row({ rowData }) {
         type="groupType"
       >
         {(provided1, snapshot1) => (
-          <div
-            className="pl-4 "
-            ref={provided1.innerRef}
-            {...provided1.droppableProps}
-          >
-            {rowData?.sub?.map((load, i) => (
-              <Draggable
-                draggableId={`balanceSheet-${rowData?.id}-${load?.id}`}
-                index={i}
-                key={`${rowData?.id}-${load?.id}`}
-              >
-                {(provided, snapshot) => (
-                  <div
-                    key={`${rowData?.id}-${load?.id}`}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    ref={provided.innerRef}
-                  >
-                    <RowClient
-                      groupCategoryId={rowData?.id}
-                      dataSource={load}
-                    />
-                  </div>
-                )}
-              </Draggable>
-            ))}
-            {provided1.placeholder}
-          </div>
+          <>
+            <div
+              className="pl-4 "
+              ref={provided1.innerRef}
+              {...provided1.droppableProps}
+            >
+              {rowData?.sub?.map((load, i) => (
+                <Draggable
+                  draggableId={`balanceSheet-${rowData?.id}-${load?.id}`}
+                  index={i}
+                  key={`${rowData?.id}-${load?.id}`}
+                >
+                  {(provided, snapshot) => (
+                    <div
+                      key={`${rowData?.id}-${load?.id}`}
+                      {...provided.draggableProps}
+                      {...provided.dragHandleProps}
+                      ref={provided.innerRef}
+                    >
+                      <RowClient
+                        groupCategoryId={rowData?.id}
+                        dataSource={load}
+                      />
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided1.placeholder}
+            </div>
+          </>
         )}
       </Droppable>
+      <div>
+        <RowTotal subGroup={rowData?.sub} />
+      </div>
     </td>
   );
 }
@@ -64,7 +70,7 @@ function BalanceSheet() {
         <tbody>
           <tr>
             <td>
-              <RowTotal />
+              <RowYear />
             </td>
           </tr>
           {groupType?.map((r, i) => (

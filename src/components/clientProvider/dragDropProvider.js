@@ -24,7 +24,6 @@ function DragDropProvider({ children }) {
     let copyGroupType = [...groupType];
 
     if (source?.droppableId === "accountTable") {
-      console.log("accountable");
       let copyParseData = [...parsedData?.data];
 
       // update currentItem
@@ -42,7 +41,6 @@ function DragDropProvider({ children }) {
     }
 
     if (source?.droppableId?.includes("groupType")) {
-      console.log("groupType");
       const idData = source?.droppableId?.split("-");
       const groupCategoryId = idData[1];
       const groupTypeId = idData[2];
@@ -107,24 +105,7 @@ function DragDropProvider({ children }) {
         setGroupType([...copyGroupType]);
       }
     }
-
-    // let add,
-    //   active = todos,
-    //   completed = completedTodos;
-
-    // if (source.droppableId === "TodosList") {
-    //   add = active.splice(source.index, 1)[0];
-    //   active = [...active];
-    // } else {
-    //   add = completed.splice(source.index, 1)[0];
-    //   completed = [...completed];
-    // }
-
-    // if (destination.droppableId === "TodosList") {
-    //   active.splice(destination.index, 0, { ...add, isDone: false });
-    // } else {
-    //   completed.splice(destination.index, 0, { ...add, isDone: true });
-    // }
+    
   };
   return <DragDropContext onDragEnd={onDragEnd}>{children}</DragDropContext>;
 }
