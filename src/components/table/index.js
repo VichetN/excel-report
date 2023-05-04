@@ -1,8 +1,8 @@
 import { selectedDragRowAtom } from "@/recoils";
 import cx from "classnames";
-import React, { useEffect } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { useRecoilState, useRecoilValue } from "recoil";
+import DraggingBox from "./draggingBox";
 
 const PRIMARY_BUTTON_NUMBER = 0;
 
@@ -47,24 +47,14 @@ function Row({ rowData, cols, index }) {
   };
 
   // Determines if the multiSelect key was used
-  const wasMultiSelectKeyUsed = (event) => event.shiftKey;
+  // const wasMultiSelectKeyUsed = (event) => event.shiftKey;
 
   function performAction(event, index) {
-    // const { task, toggleSelection, toggleSelectionInGroup, multiSelectTo } =
-    //   snapshot;
-
     if (wasToggleInSelectionGroupKeyUsed(event)) {
       setSelectedDragRow((prev) => [...prev, index]);
       return;
     }
-
-    // if (wasMultiSelectKeyUsed(event)) {
-    //   console.log("2");
-    //   // multiSelectTo(task.id);
-    //   return;
-    // }
     setSelectedDragRow([index]);
-    // toggleSelection(task.id);
   }
 
   return (
@@ -115,21 +105,13 @@ function Row({ rowData, cols, index }) {
 }
 
 function Table({ data = [], cols = [] }) {
-  // const selectedDragRow = useRecoilValue(selectedDragRowAtom);
   return (
     <Droppable
       droppableId="accountTable"
       type="accountTable"
       // mode="virtual"
       renderClone={(provided, snapshot, rubric) => (
-        <div
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          ref={provided.innerRef}
-          className="px-2 py-[3px] rounded-md w-[250px] h-[30px] bg-indigo-100/70 line-clamp-1"
-        >
-          {data[rubric?.source?.index][1]}
-        </div>
+        <DraggingBox provided={provided} rubric={rubric} data={data} />
       )}
     >
       {(provided, snapshot) => (

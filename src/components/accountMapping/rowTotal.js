@@ -11,37 +11,26 @@ function RowTotal({ subGroup = [] }) {
   const newItemsArr = itemsArr?.flat();
 
   const totalCurrentYear = newItemsArr?.reduce(
-    (acc, curr) => acc + curr?.currentYearBalance,
+    (acc, curr) => acc + (curr?.currentYearBalance || 0),
     0
   );
   const totalPastYear = newItemsArr?.reduce(
-    (acc, curr) => acc + curr?.pastYearBalance,
+    (acc, curr) => acc + (curr?.pastYearBalance || 0),
     0
   );
 
   return (
-    <>
-      {/* <div className="pl-8 w-full flex">
-        <div className="px-3 flex-1" />
-        <div className="w-[300px] grid grid-cols-2">
-          <div className="px-3 border font-bold">{moment().format("YYYY")}</div>
-          <div className="px-3 border font-bold">
-            {moment().subtract(1, "year").format("YYYY")}
-          </div>
+    <div className="pl-8 w-full flex">
+      <div className="px-3 flex-1" />
+      <div className="w-[300px] grid grid-cols-2 bg-blue-100 font-bold">
+        <div className="px-3 border border-black">
+          {Number(totalCurrentYear || 0).toFixed(2)}
         </div>
-      </div> */}
-      <div className="pl-8 w-full flex">
-        <div className="px-3 flex-1" />
-        <div className="w-[300px] grid grid-cols-2 bg-blue-100 font-bold">
-          <div className="px-3 border border-black">
-            {Number(totalCurrentYear || 0).toFixed(2)}
-          </div>
-          <div className="px-3 border border-black">
-            {Number(totalPastYear || 0).toFixed(2)}
-          </div>
+        <div className="px-3 border border-black">
+          {Number(totalPastYear || 0).toFixed(2)}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

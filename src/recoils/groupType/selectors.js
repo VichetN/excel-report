@@ -25,3 +25,39 @@ export const totalGroupTypeSelector = selector({
     return { totalCurrentYear, totalPastYear };
   },
 });
+
+export const updateGroupTypeSelector = selector({
+  key: "udpate-group-type",
+  get: ({ get }) => get(groupTypeAtom),
+  set: ({ get, set }, state) => {
+    let groupType = [...get(groupTypeAtom)];
+
+    const groupCategoryIndex = groupType?.findIndex(
+      (e) => e?.id === state?.groupCategoryId
+    );
+    if (groupCategoryIndex > -1) {
+      const currentCategory = groupType[groupCategoryIndex];
+
+      const subTypes = [...currentCategory?.sub];
+      const currentSubTypeIndex = subTypes?.findIndex(
+        (e) => e?.id === state?.groupTypeId
+      );
+
+      const newSubType = {
+        ...subTypes[currentSubTypeIndex],
+        title: state?.title,
+      };
+      // replace new sub type
+      subTypes?.splice(currentSubTypeIndex, 1, newSubType);
+      // replace groupType
+      groupType?.splice(groupCategoryIndex, 1, {
+        ...currentCategory,
+        sub: [...subTypes],
+      });
+
+      set(groupTypeAtom, groupType);
+    }
+
+    // console.log(state, groupType);
+  },
+});

@@ -1,4 +1,4 @@
-import { groupTypeAtom, parsedDataAtom } from "@/recoils";
+import { groupTypeAtom, parsedDataAtom, selectedDragRowAtom } from "@/recoils";
 import React from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import { useRecoilState } from "recoil";
@@ -7,6 +7,8 @@ import { v4 as uuidv4 } from "uuid";
 function DragDropProvider({ children }) {
   const [parsedData, setParsedData] = useRecoilState(parsedDataAtom);
   const [groupType, setGroupType] = useRecoilState(groupTypeAtom);
+  const [selectedDragRow, setSelectedDragRow] =
+    useRecoilState(selectedDragRowAtom);
 
   const onDragEnd = (result) => {
     const { source, destination } = result;
@@ -21,10 +23,9 @@ function DragDropProvider({ children }) {
 
     let currentItem, currentCategory, newItem;
     let copyGroupType = [...groupType];
+    let copyParseData = [...parsedData?.data];
 
     if (source?.droppableId === "accountTable") {
-      let copyParseData = [...parsedData?.data];
-
       // update currentItem
       currentItem = copyParseData?.splice(source.index, 1)[0];
       copyParseData = [...copyParseData];
@@ -71,6 +72,7 @@ function DragDropProvider({ children }) {
         });
       }
     }
+    // source drag balanceSheet (category)
     if (source?.droppableId?.includes("balanceSheet")) {
       const idData = source?.droppableId?.split("-");
       const groupCategoryId = idData[1];
@@ -94,9 +96,30 @@ function DragDropProvider({ children }) {
         });
       }
     }
+
+    if (source?.droppableId === "accountTable" && selectedDragRow?.length > 1) {
+      newItem = [];
+      // add datas to newItem as Array
+      newItem = copyParseData?.filter(
+        (e, index) => selectedDragRow?.indexOf(index) > -1
+      );
+      newItem = newItem?.map((load) => ({
+        id: uuidv4(),
+        title: typeof load[1] !== "undefined" ? load[1] : null,
+        currentYearBalance: typeof load[2] !== "undefined" ? load[2] : 0,
+        pastYearBalance: typeof load[3] !== "undefined" ? load[3] : 0,
+      }));
+
+      copyParseData = copyParseData?.filter(
+        (e, index) => selectedDragRow?.indexOf(index) === -1
+      );
+
+      // console.log(newItem);
+      // return;
+    }
+
     // destination
     if (destination?.droppableId?.includes("groupType")) {
-      // console.log({ source, destination });
       const idData = destination?.droppableId?.split("-id-");
       const groupCategoryId = idData[1];
       const groupTypeId = idData[2];
@@ -113,9 +136,14 @@ function DragDropProvider({ children }) {
 
         let subTypeItems = [...(currentSubType?.items || [])];
 
-        subTypeItems?.splice(destination?.index, 0, { ...newItem });
-        const newSubType = { ...currentSubType, items: [...subTypeItems] };
+        // if multi Select, else select 1 or none
+        if (selectedDragRow?.length > 1 && Array.isArray(newItem)) {
+          subTypeItems?.splice(destination?.index, 0, ...newItem);
+        } else {
+          subTypeItems?.splice(destination?.index, 0, { ...newItem });
+        }
 
+        const newSubType = { ...currentSubType, items: [...subTypeItems] };
         // replace new sub type
         subTypes?.splice(indexSubType, 1, newSubType);
         // replace groupType
@@ -125,9 +153,10 @@ function DragDropProvider({ children }) {
         });
 
         setGroupType([...copyGroupType]);
+        setSelectedDragRow([]);
       }
     }
-
+    // destination drag balanceSheet (category)
     if (destination?.droppableId?.includes("balanceSheet")) {
       const idData = destination?.droppableId?.split("-");
       const groupCategoryId = idData[1];
