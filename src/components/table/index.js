@@ -57,26 +57,13 @@ function Row({ rowData, cols, index }) {
     setSelectedDragRow([index]);
   }
 
+  if (rowData?.length <= 0) return null;
+
   return (
     <Draggable draggableId={`draggable-${index}`} index={index}>
       {(provided, snapshot) => {
-        // if (snapshot.isDragging)
-        //   return (
-        //     <tr
-        //       {...provided.draggableProps}
-        //       {...provided.dragHandleProps}
-        //       ref={provided.innerRef}
-        //     >
-        //       <td>
-        //         <div className="px-2 py-[3px] rounded-sm w-[250px] bg-indigo-100/70 line-clamp-1">
-        //           {rowData[1]}
-        //         </div>
-        //       </td>
-        //     </tr>
-        //   );
         return (
           <tr
-            // ref={drag}
             className={cx("", {
               "bg-indigo-200/60": snapshot.isDragging,
               // "bg-blue-200 border-indigo-700": selectedDragRow?.includes(index),

@@ -25,6 +25,7 @@
     "react-dom": "18.2.0",
     "react-dropzone": "^14.2.3",
     "react-icons": "^4.8.0",
+    "react-responsive-modal": "^6.4.1",
     "react-sortablejs": "^6.1.4",
     "recoil": "^0.7.7",
     "recoil-persist": "^4.2.0",

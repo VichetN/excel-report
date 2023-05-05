@@ -3,17 +3,27 @@
 import { useRecoilState } from "recoil";
 import { groupTypeAtom, parsedDataAtom } from "@/recoils";
 import { Draggable, Droppable } from "react-beautiful-dnd";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import { MdEditNote } from "react-icons/md";
 import cx from "classnames";
 import RowClient from "./rowClient";
 import RowTotal from "./rowTotal";
 import RowYear from "./rowYear";
+import CategoryModal from "./categoryModal";
 
 /* eslint-disable react/jsx-key */
-function Row({ rowData }) {
+function Row({ rowData, handleOpenCategory }) {
   return (
     <td className="py-2">
-      <b>{rowData?.title}</b>
+      <div className="font-bold flex gap-2 items-center">
+        {rowData?.title}
+        <button
+          className="hover:opacity-60"
+          onClick={() => handleOpenCategory(rowData)}
+        >
+          <MdEditNote size={25} />
+        </button>
+      </div>
       <Droppable droppableId={`balanceSheet-${rowData?.id}`} type="groupType">
         {(provided1, snapshot1) => (
           <>
@@ -59,39 +69,48 @@ function Row({ rowData }) {
 
 function BalanceSheet() {
   const [groupType, setGroupType] = useRecoilState(groupTypeAtom);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [openCategory, setOpenCategory] = useState(false);
+
+  const handleOpenCategory = (category) => {
+    setSelectedCategory(category);
+    setOpenCategory(true);
+  };
 
   return (
-    <div className="border border-gray-400 rounded-xl p-2">
-      <div>
-        <h2 className="uppercase font-bold">Balance Sheet</h2>
-      </div>
+    <>
+      <CategoryModal
+        dataSource={selectedCategory}
+        open={openCategory}
+        setOpen={setOpenCategory}
+      />
+      <div className="border border-gray-400 rounded-xl p-2">
+        <div>
+          <h2 className="uppercase font-bold">Balance Sheet</h2>
+        </div>
 
-      <table className="w-full rounded-lg">
-        <tbody>
-          <tr>
-            <td>
-              <RowYear />
-            </td>
-          </tr>
-          {groupType?.map((r, i) => (
-            <Fragment key={r?.id}>
-              <tr>
-                <Row index={i} rowData={r} />
-              </tr>
-            </Fragment>
-          ))}
-        </tbody>
-      </table>
-
-      {/* <div ref={provided.innerRef} {...provided.droppableProps}>
-            {groupType?.map((load) => (
-              <div key={load.id}>
-                <h2 className="font-bold py-2">{load?.title}</h2>
-              </div>
+        <table className="w-full rounded-lg">
+          <tbody>
+            <tr>
+              <td>
+                <RowYear />
+              </td>
+            </tr>
+            {groupType?.map((r, i) => (
+              <Fragment key={r?.id}>
+                <tr>
+                  <Row
+                    index={i}
+                    rowData={r}
+                    handleOpenCategory={handleOpenCategory}
+                  />
+                </tr>
+              </Fragment>
             ))}
-            {provided.placeholder}
-          </div> */}
-    </div>
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }
 

@@ -30,7 +30,7 @@ function TItleType({ dataSource, isExpanded, setIsExpanded, groupCategoryId }) {
 
   const handleEditButton = () => {
     const newValue = inputValue?.trim();
-    if (!isEditMode || inputValue === "") {
+    if (!isEditMode || newValue === "") {
       setIsEditMode(true);
       return;
     }

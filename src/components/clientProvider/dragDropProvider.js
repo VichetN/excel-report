@@ -25,13 +25,15 @@ function DragDropProvider({ children }) {
     let copyGroupType = [...groupType];
     let copyParseData = [...parsedData?.data];
 
-    if (source?.droppableId === "accountTable") {
+    if (source?.droppableId === "accountTable" && selectedDragRow?.length <= 1) {
       // update currentItem
       currentItem = copyParseData?.splice(source.index, 1)[0];
       copyParseData = [...copyParseData];
 
       newItem = {
         id: uuidv4(),
+        accountId:
+          typeof currentItem[0] !== "undefined" ? currentItem[0] : null,
         title: typeof currentItem[1] !== "undefined" ? currentItem[1] : null,
         currentYearBalance:
           typeof currentItem[2] !== "undefined" ? currentItem[2] : 0,
@@ -114,8 +116,8 @@ function DragDropProvider({ children }) {
         (e, index) => selectedDragRow?.indexOf(index) === -1
       );
 
-      // console.log(newItem);
-      // return;
+      // console.log(copyParseData)
+
     }
 
     // destination
@@ -153,6 +155,10 @@ function DragDropProvider({ children }) {
         });
 
         setGroupType([...copyGroupType]);
+        setParsedData((prev) => ({
+          ...prev,
+          data: [...copyParseData],
+        }));
         setSelectedDragRow([]);
       }
     }
@@ -176,6 +182,10 @@ function DragDropProvider({ children }) {
         });
 
         setGroupType([...copyGroupType]);
+        setParsedData((prev) => ({
+          ...prev,
+          data: [...copyParseData],
+        }));
       }
     }
   };

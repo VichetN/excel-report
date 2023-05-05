@@ -9,6 +9,10 @@ function HeaderSection() {
   const [activeStep, setActiveStep] = useRecoilState(activeStepAtom);
 
   const handleNextStep = () => {
+    if (activeStep?.id === 2) {
+      setActiveStep(stepsData[2]);
+      return;
+    }
     setActiveStep(stepsData[1]);
   };
   return (
