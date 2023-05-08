@@ -3,6 +3,7 @@ import moment from "moment";
 import React from "react";
 import { useRecoilValue } from "recoil";
 
+/* eslint-disable react/no-unescaped-entities */
 function DirectorReport() {
   const companyInfo = useRecoilValue(companyInfoAtom);
   return (

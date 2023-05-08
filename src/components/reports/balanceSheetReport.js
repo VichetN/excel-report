@@ -89,7 +89,7 @@ function BalanceSheetReport() {
           <Fragment key={r?.id}>
             <h2 className="font-bold ">{r?.title}</h2>
             {r?.sub?.map((load) => (
-              <Row rowData={load} />
+              <Row key={load?.id} rowData={load} />
             ))}
             <RowTotal subGroup={r?.sub} />
           </Fragment>

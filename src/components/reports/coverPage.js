@@ -2,7 +2,7 @@ import { companyInfoAtom } from "@/recoils";
 import moment from "moment";
 import React from "react";
 import { useRecoilValue } from "recoil";
-
+/* eslint-disable react/no-unescaped-entities */
 function CoverPage() {
   const companyInfo = useRecoilValue(companyInfoAtom)
   return (
