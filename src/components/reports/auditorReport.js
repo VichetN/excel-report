@@ -1,22 +1,28 @@
+import { companyInfoAtom } from "@/recoils";
+import moment from "moment";
 import React from "react";
+import { useRecoilValue } from "recoil";
 
 function AuditorReport() {
+  const companyInfo = useRecoilValue(companyInfoAtom);
   return (
-    <div className="w-[21cm] px-6 py-3 border shadow-lg">
-      <div className="text-xl font-bold">
+    <div className="w-[21cm] border py-2 shadow-lg">
+      <div className="text-xl font-bold px-6 my-4">
         <h1>Independent auditor’s report to the member of</h1>
-        <h1>Client Company Limited</h1>
+        <h1>{companyInfo?.clientName}</h1>
         <h1>(Incorporated in Hong Kong with limited liability)</h1>
       </div>
 
-      <div className="mt-6">
+      <hr />
+
+      <div className="my-4 mx-6">
         <h2 className="font-bold ">Opinion</h2>
         <p className="mt-4 text-justify">
-          We have audited the financial statements of Client Company Limited
+          We have audited the financial statements of {companyInfo?.clientName}
           (“the Company”), which comprise the statement of financial position as
-          at 31 March 2021, and the income statement for the year then ended,
-          and notes to the financial statements, including a summary of
-          significant accounting policies.
+          at {moment(companyInfo?.endDate).format("DD MMMM YYYY")}, and the
+          income statement for the year then ended, and notes to the financial
+          statements, including a summary of significant accounting policies.
         </p>
 
         <p className="mt-4 text-justify">
@@ -29,7 +35,9 @@ function AuditorReport() {
         </p>
       </div>
 
-      <div className="mt-6">
+      <hr />
+
+      <div className="my-4 mx-6">
         <h2 className="font-bold ">Basis for Opinion</h2>
         <p className="mt-4 text-justify">
           We conducted our audit in accordance with Hong Kong Standards on
@@ -47,7 +55,9 @@ function AuditorReport() {
         </p>
       </div>
 
-      <div className="mt-6">
+      <hr />
+
+      <div className="my-4 mx-6">
         <h2 className="font-bold ">
           Material Uncertainty Related to Going Concern
         </h2>
@@ -62,6 +72,22 @@ function AuditorReport() {
           appropriate estimates and disclosures have been made and our opinion
           is not qualified in this respect.
         </p>
+      </div>
+
+      {/* footer */}
+      <hr />
+      <div className="my-8 mx-6">
+        <div>
+          <p className="text-justify">Audit Automation Company</p>
+          <p className="text-justify">
+            Certified Public Accountants (Practising)
+          </p>
+          <p className="text-justify">Hong Kong</p>
+        </div>
+        <div className="mt-4">
+          <p className="text-justify">Engagement partner:</p>
+          <p className="text-justify">Practising Certificate number:</p>
+        </div>
       </div>
     </div>
   );

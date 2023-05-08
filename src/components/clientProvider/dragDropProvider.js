@@ -107,6 +107,8 @@ function DragDropProvider({ children }) {
       );
       newItem = newItem?.map((load) => ({
         id: uuidv4(),
+        accountId:
+          typeof load[0] !== "undefined" ? load[0] : null,
         title: typeof load[1] !== "undefined" ? load[1] : null,
         currentYearBalance: typeof load[2] !== "undefined" ? load[2] : 0,
         pastYearBalance: typeof load[3] !== "undefined" ? load[3] : 0,
