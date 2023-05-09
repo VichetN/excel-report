@@ -11,4 +11,8 @@ export const stepsData = [
     id: 3,
     title: "Reporting",
   },
+  {
+    id: 4,
+    title: "Preview",
+  },
 ];

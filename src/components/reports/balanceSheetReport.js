@@ -42,7 +42,7 @@ function RowTotal({ subGroup }) {
     <div className="">
       <div className="flex">
         <div className="flex-1" />
-        <div className="w-[200px] grid grid-cols-2 border-t border-black text-right">
+        <div className="w-[200px] grid grid-cols-2 border-t mt-2 border-black text-right">
           <div>{Number(totalCurrentYear || 0).toFixed(2)}</div>
           <div>{Number(totalPastYear || 0).toFixed(2)}</div>
         </div>
@@ -55,8 +55,8 @@ function BalanceSheetReport() {
   const companyInfo = useRecoilValue(companyInfoAtom);
   const groupType = useRecoilValue(groupTypeAtom);
   return (
-    <div className="w-[21cm] h-[29.7cm] border py-2 shadow-lg">
-      <div className="text-xl font-bold px-6 my-4">
+    <div className="w-[21cm] h-[29.67cm] border py-2" style={{pageBreakAfter: "always"}}>
+      <div className="text-xl font-bold px-6 my-2">
         <h1>Balance sheet</h1>
         <h1>
           For the year ended{" "}

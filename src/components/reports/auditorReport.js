@@ -6,8 +6,8 @@ import { useRecoilValue } from "recoil";
 function AuditorReport() {
   const companyInfo = useRecoilValue(companyInfoAtom);
   return (
-    <div className="w-[21cm] border py-2 shadow-lg">
-      <div className="text-xl font-bold px-6 my-4">
+    <div className="w-[21cm] h-[29.67cm] border py-2 " style={{pageBreakAfter: "always"}}>
+      <div className="text-xl font-bold px-6 my-2">
         <h1>Independent auditor’s report to the member of</h1>
         <h1>{companyInfo?.clientName}</h1>
         <h1>(Incorporated in Hong Kong with limited liability)</h1>
